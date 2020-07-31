@@ -1,19 +1,19 @@
 <!-- 主页组件 -->
 <template>
-<div class='tt-box'>
-  <!-- 主页头部 -->
-    <div class="tt-home-header">
-        <h2>头条</h2>
-    </div>
-  <!-- 主页内容 -->
-  <div class="tt-home-content">
-      <div class='content-left'>
-          <Navigator></Navigator>
+  <div class='tt-box'>
+    <!-- 主页头部 -->
+      <div class="tt-home-header">
+          <h2>头条</h2>
       </div>
-      <div class='content-middle'>中间</div>
-      <div class='content-right'>右边</div>
+    <!-- 主页内容 -->
+    <div class="tt-home-content">
+        <div class='content-left'>
+            <Navigator></Navigator>
+        </div>
+        <div class='content-middle'>中间</div>
+        <div class='content-right'>右边</div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -47,9 +47,32 @@ created() {
 
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
-mounted() {
+// mounted() {
+//   this.$axios.get('http://tt.linweiqin.com/api/tt/getArticles',{
+//     params:{
+//       lastid:0,
+//       type: 'TT',
+//       page: 1,
+//       number: 20,
+//     }
+//   }).then(res=>{
+//     console.log(res);
+//   }).catch(err=>{console.log(err);
+//   })
+// },
 
+async mounted(){ //异步代码改同步
+ let res = await this.$axios.get('/getArticles',{
+    params:{
+      lastid:0,
+      type: 'TT',
+      page: 1,
+      number: 20,
+    }
+  })
+  console.log(res);
 },
+
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
 beforeUpdate() {}, //生命周期 - 更新之前
