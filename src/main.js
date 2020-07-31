@@ -8,6 +8,10 @@ import axios from './comment/myaxios' //引入配置后的axios
 
 Vue.prototype.$axios = axios //在vue的原型上添加$axios
 
+//引入element.ui组件库
+import { Message } from "element-ui";
+Vue.prototype.$message = Message;
+
 //
 
 Vue.config.productionTip = false
