@@ -30,7 +30,7 @@
                 </section>
                 <section class='article-box' v-show="activeTab==='article'">
                     <input v-model='art_title' type="text" class='articleTitle' placeholder="文章标题">
-                    <vue-editor id="editor" v-model="art_content"> </vue-editor>
+                    <vue-editor id="editor" use-custom-image-handler @image-added="handleImageAdded" v-model="art_content"> </vue-editor>
                     <div class='publishBox'> <span @click='publishArticle'>发布</span> </div>
                 </section>
             </div>    
@@ -77,6 +77,7 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
+  //切换
   changeTab:function(type){
     this.activeTab = type;
   },
@@ -123,6 +124,29 @@ methods: {
         console.log(err);
       })
   },
+
+  //富文本图片上传
+  handleImageAdded: function(file, Editor, cursorLocation, resetUploader) {
+      var formData = new FormData();  // 构建form表单数据
+      formData.append("file", file); // 往表单数据中 填充 file:file 数据
+
+      //图片上传请求接口
+      this.$axios({
+        url: "/aliossUpload",
+        method: "POST",
+        data: formData
+      })
+        .then(result => {
+          let url = result.url; // Get url from response
+          Editor.insertEmbed(cursorLocation, "image", url); // Editor是富文本编辑器的实例
+          resetUploader();
+          console.log(url);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+  
 
 },
 //生命周期 - 创建完成（可以访问当前this实例）
